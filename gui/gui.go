@@ -56,6 +56,7 @@ func GetText() *fyne.Container {
 	Wifi5GPas := widget.NewLabel("5GWIFI密码")
 	return container.NewVBox(adminPas, Wifi2GSsid, Wifi2GPas, Wifi5GSsid, Wifi5GPas)
 }
+
 func GetInfo() (*widget.Entry, *widget.Entry, *widget.Entry, *widget.Entry, *widget.Entry) {
 	adminPas := widget.NewEntry()
 	Wifi2GSsid := widget.NewEntry()
@@ -71,11 +72,12 @@ func GetInfo() (*widget.Entry, *widget.Entry, *widget.Entry, *widget.Entry, *wid
 }
 
 // Btn 设置按钮
+// 老版本
 func Btn(adminPas, Wifi2GSsid, Wifi2GPas, Wifi5GSsid, Wifi5GPas *widget.Entry) *fyne.Container {
 	text := widget.NewLabel("K2p路由器一键设置DEBUG\n")
 	out := container.New(layout.NewGridLayoutWithRows(4), text)
 
-	bt := widget.NewButton("一键设置", func() {
+	bt := widget.NewButton("一键设置(老)", func() {
 		pass := adminPas.Text
 		name2g := Wifi2GSsid.Text
 		pass2g := Wifi2GPas.Text
@@ -87,13 +89,13 @@ func Btn(adminPas, Wifi2GSsid, Wifi2GPas, Wifi5GSsid, Wifi5GPas *widget.Entry) *
 			//fmt.Println(2)
 			text.SetText("管理员密码长度请设置5位以上\n")
 
-		} else if len(pass2g) <= 6 {
+		} else if len(pass2g) <= 8 {
 
 			//fmt.Println(3)
 			//text.Text += "WIFI2G密码长度请设置6位以上\n"
 			text.SetText("WIFI2G密码长度请设置6位以上\n")
 
-		} else if len(pass5g) <= 6 {
+		} else if len(pass5g) <= 8 {
 			//fmt.Println(4)
 			//text.Text += "WIFI5G密码长度请设置6位以上\n"
 			text.SetText("WIFI5G密码长度请设置6位以上\n")
@@ -101,8 +103,36 @@ func Btn(adminPas, Wifi2GSsid, Wifi2GPas, Wifi5GSsid, Wifi5GPas *widget.Entry) *
 
 		//fmt.Println(5)
 		ip := "192.168.2.1"
-		control.SetRouter(ip, pass, name2g, pass2g, name5g, pass5g, text)
+		control.SetRouter1(ip, pass, name2g, pass2g, name5g, pass5g, text)
+	})
+	bt2 := widget.NewButton("一键设置(新)", func() {
+		pass := adminPas.Text
+		name2g := Wifi2GSsid.Text
+		pass2g := Wifi2GPas.Text
+		name5g := Wifi5GSsid.Text
+		pass5g := Wifi5GPas.Text
+		//fmt.Println(1)
+		if len(pass) <= 5 {
+
+			//fmt.Println(2)
+			text.SetText("管理员密码长度请设置5位以上\n")
+
+		} else if len(pass2g) <= 8 {
+
+			//fmt.Println(3)
+			//text.Text += "WIFI2G密码长度请设置6位以上\n"
+			text.SetText("WIFI2G密码长度请设置6位以上\n")
+
+		} else if len(pass5g) <= 8 {
+			//fmt.Println(4)
+			//text.Text += "WIFI5G密码长度请设置6位以上\n"
+			text.SetText("WIFI5G密码长度请设置6位以上\n")
+		}
+
+		//fmt.Println(5)
+		ip := "192.168.2.1"
+		control.SetRouter1(ip, pass, name2g, pass2g, name5g, pass5g, text)
 	})
 
-	return container.NewVBox(out, bt)
+	return container.NewVBox(out, bt, bt2)
 }
