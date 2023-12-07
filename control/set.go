@@ -2,21 +2,16 @@ package control
 
 import (
 	"context"
+	"fmt"
 	"fyne.io/fyne/v2/widget"
 	"github.com/chromedp/chromedp"
 	"log"
+	"sync"
 	"time"
 )
 
-func SetRouter1(ip, adminPass, name2g, pass2g, name5g, pass5g string, text *widget.Label) {
-	//var adminPass = "123456"
-	//var wifiName = "testWifiName"
-	//var wifiPass = "Qwer12345"
-	//fmt.Println(name2g)
-	//fmt.Println(pass2g)
-	//
-	//fmt.Println(name5g)
-	//fmt.Println(pass5g)
+func SetRouter1(ip, adminPass, name2g, pass2g, name5g, pass5g string, text *widget.Label, wg *sync.WaitGroup) {
+	defer wg.Done()
 
 	// 创建一个带有10秒超时的上下文
 	//ctx, _ := context.WithTimeout(context.Background(), 6*time.Second)
@@ -67,15 +62,18 @@ func SetRouter1(ip, adminPass, name2g, pass2g, name5g, pass5g string, text *widg
 
 	if err != nil {
 		log.Fatal(err)
-		return
-		//text.Text += "路由器设置失败\n"
 		text.SetText("路由器设置失败\n")
+		return
 	}
 	//text.Text += "路由器设置成功\n"
 
 	text.SetText("路由器设置成功\n")
+	fmt.Println(ip + "：成功")
+	SuccessSum += 1
 }
-func SetRouter2(ip, adminPass, name2g, pass2g, name5g, pass5g string, text *widget.Label) {
+func SetRouter2(ip, adminPass, name2g, pass2g, name5g, pass5g string, text *widget.Label, wg *sync.WaitGroup) {
+	defer wg.Done()
+
 	// 创建一个带有10秒超时的上下文
 	//ctx, _ := context.WithTimeout(context.Background(), 6*time.Second)
 	// 使用 chromedp.NewContext 创建一个带有超时的上下文
@@ -121,11 +119,14 @@ func SetRouter2(ip, adminPass, name2g, pass2g, name5g, pass5g string, text *widg
 
 	if err != nil {
 		log.Fatal(err)
-		return
 		//text.Text += "路由器设置失败\n"
 		text.SetText("路由器设置失败\n")
+		return
 	}
 	//text.Text += "路由器设置成功\n"
 
 	text.SetText("路由器设置成功\n")
+	fmt.Println(ip + "：成功")
+	SuccessSum += 1
+
 }
